@@ -16,13 +16,13 @@ const TableHead = () => {
 }
 const TableBody = props => {
     const linhas = props.empresas.map((linha, index) => {
-
+        
         return (
             <tr key={index}>
                 <td>{linha.CodigoEmpresa}</td>
                 <td>{linha.NomeFantasia}</td>
                 <td>{linha.RazaoSocial}</td>
-                <td><button onClick={() => { props.removeEmpresa(index) }}>Remover</button></td>
+                <td><button onClick={() => { props.removeEmpresa(index) }} className='class="waves-effect waves-light #d32f2f red darken-2 btn'>Remover</button></td>
             </tr>
         );
 
@@ -40,7 +40,7 @@ class Tabela extends Component {
     render() {
         const { empresas, removeEmpresa } = this.props;
         return (
-            <table>
+            <table className="centered highlight">
                 <TableHead />
                 <TableBody empresas={empresas} removeEmpresa={removeEmpresa} />
             </table>

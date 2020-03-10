@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react';
+import 'materialize-css/dist/css/materialize.min.css';
 import './App.css';
 import Tabela from './Tabela';
-//import { render } from '@testing-library/react';
+import Header from './Header';
 import Form from './Formulario';
 
 class App extends Component {
@@ -53,8 +54,11 @@ class App extends Component {
   render() {
     return (
       <Fragment>
+        <Header />
+        <div className="container mb-10">
         <Tabela empresas={this.state.empresas} removeEmpresa={this.removeEmpresa} />
         <Form escutadorDeSubmit={this.escutadorDeSubmit} />
+        </div>
       </Fragment>
 
     );
