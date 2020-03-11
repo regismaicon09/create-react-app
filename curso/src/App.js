@@ -4,60 +4,62 @@ import './App.css';
 import Tabela from './Tabela';
 import Header from './Header';
 import Form from './Formulario';
+import PopUp from './PopUp';
+import ApiService from './ApiService';
+
 
 class App extends Component {
-  state = {
-    empresas:
-      [{
-        "CodigoEmpresa": 1,
-        "NomeFantasia": "CAMPINEIRA COMERCIO PRODUTOS QUIMICOS FARMACEUTICOS LTDA",
-        "RazaoSocial": "CAMPINEIRA COMERCIO PRODUTOS QUIMICOS FARMACEUTICOS LTDA"
-      },
-      {
-        "CodigoEmpresa": 2, "NomeFantasia": "FLAMBOYANT COM DE MEDIC LTDA",
-        "RazaoSocial": "FLAMBOYANT COM DE MEDIC LTDA"
-      },
-      {
-        "CodigoEmpresa": 3, "NomeFantasia": "DROGARIA PLUS 24 OUTUBRO",
-        "RazaoSocial": "CAMPINEIRA COMERCIO PRODUTOS QUIMICOS FARMACEUTICOS LTDA"
-      },],
-  };
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      empresas: [],
+    };
+
+  }
 
 
   // remove
-  removeEmpresa = index => {
-
+  removeEmpresa = id => {
     const { empresas } = this.state;
-
     this.setState(
       {
-        empresas: empresas.filter((empresas, posAtual) => {
-          console.log(index, posAtual);
-          return posAtual !== index;
+        empresas: empresas.filter((empresa) => {
+          return empresa.id!==id;
 
         }),
 
       }
 
     );
+    ApiService.RemoveAutor(id);
 
+    PopUp.exibeMensagem("error", "Empresa removida com sucesso");
 
   }
 
   escutadorDeSubmit = empresa => {
+    this.setState({ empresas: [...this.state.empresas, empresa] })
+    PopUp.exibeMensagem("sucess", "Empresa adicionada com sucesso");
+  }
+  componentDidMount() {
 
-    this.setState({empresas:[...this.state.empresas,empresa]})
+   ApiService.ListaEmpresas()
+      .then(res => this.setState({ empresas: [...this.state.empresas, ...res] }));
 
-}
-
-
+  }
   render() {
+
+    const empresas = ApiService.ListaEmpresas();
+    console.log(empresas);
+
     return (
       <Fragment>
         <Header />
         <div className="container mb-10">
-        <Tabela empresas={this.state.empresas} removeEmpresa={this.removeEmpresa} />
-        <Form escutadorDeSubmit={this.escutadorDeSubmit} />
+          <h1>Drogaria Plus</h1>
+          <Tabela empresas={this.state.empresas} removeEmpresa={this.removeEmpresa} />
+          <Form escutadorDeSubmit={this.escutadorDeSubmit} />
         </div>
       </Fragment>
 

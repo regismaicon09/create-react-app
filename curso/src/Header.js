@@ -1,23 +1,21 @@
 import React from 'react';
+import LinkWrapper from './LinkWrapper';
 
 const Header = () => {
 
 return(
-    
   <nav>
-  <div class="nav-wrapper #2196f3 blue">
-    <a href="/" class="brand-logo">Drogaria Plus</a>
-    <ul  class="right">
-      <li><a href="/empresas">Empresas</a></li>
-      <li><a href="/clientes">Clientes</a></li>
-      <li><a href="/convenio">Convênio</a></li>
+  <div className="nav-wrapper #2196f3 blue">
+    <LinkWrapper to="/" className="brand-logo" activeStyle={{}}>Drogaria Plus</LinkWrapper>
+    <ul  className="right">
+      <li><LinkWrapper to='/'>Inicial</LinkWrapper></li>
+      <li><LinkWrapper to='/clientes'>clientes</LinkWrapper></li>
+      <li><LinkWrapper to='/empresas'>Empresas</LinkWrapper></li>
     </ul>
   </div>
 </nav>
 
-
-
-);
+)
 
 
 }

@@ -1,18 +1,43 @@
 import React, { Component } from 'react';
+import FormValidator from './FormValidator';
+import PopUp from './PopUp';
 
 class Formulario extends Component {
 
     constructor(props) {
         super(props);
+
+        this.validador = new FormValidator([
+            {
+            campo: 'CodigoEmpresa',
+            metodo: 'isInt',
+            args:[{min: 0, max: 99999 }],
+            validoQuando: true,
+            mensagem:'Entre com o código da Empresa'
+            },
+            {
+            campo: 'NomeFantasia',
+            metodo: 'isEmpty',
+            validoQuando: false,
+            mensagem:'Entre com o Nome Fantasia'
+            },
+            {
+            campo: 'RazaoSocial',
+            metodo: 'isEmpty',
+            validoQuando: false,
+            mensagem:'Entre com a RazaoSocial'
+            }
+    ]);
+
         this.stateIncial = {
             CodigoEmpresa: '',
             NomeFantasia: '',
             RazaoSocial: '',
+            validacao:this.validador.valido()
         }
         this.state = this.stateIncial;
 
     }
-
 
     escutadorDeInput = event => {
         const { name, value } = event.target;
@@ -22,8 +47,34 @@ class Formulario extends Component {
         });
     }
     submitFormulario = () => {
-        this.props.escutadorDeSubmit(this.state);
-        this.setState(this.stateIncial);
+
+        const validacao = this.validador.valida(this.state);
+
+        if (validacao.isValid) {
+
+            this.props.escutadorDeSubmit(this.state);
+            this.setState(this.stateIncial);
+        }else{
+
+            const {CodigoEmpresa,NomeFantasia,RazaoSocial} = validacao;
+            const campos = [CodigoEmpresa,NomeFantasia,RazaoSocial];
+
+            const camposInvalidos = campos.filter(elem => {
+
+                return elem.isInvalid;
+
+            });
+
+            camposInvalidos.forEach(campo => {
+                PopUp.exibeMensagem('error',campo.message);
+
+
+            });
+
+
+        }
+
+
     }
 
     render() {

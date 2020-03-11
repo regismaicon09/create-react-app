@@ -15,14 +15,14 @@ const TableHead = () => {
 
 }
 const TableBody = props => {
-    const linhas = props.empresas.map((linha, index) => {
+    const linhas = props.empresas.map((linha) => {
         
         return (
-            <tr key={index}>
+            <tr key={linha.id}>
                 <td>{linha.CodigoEmpresa}</td>
                 <td>{linha.NomeFantasia}</td>
                 <td>{linha.RazaoSocial}</td>
-                <td><button onClick={() => { props.removeEmpresa(index) }} className='class="waves-effect waves-light #d32f2f red darken-2 btn'>Remover</button></td>
+                <td><button onClick={() => { props.removeEmpresa(linha.id) }} className='class="waves-effect waves-light #d32f2f red darken-2 btn'>Remover</button></td>
             </tr>
         );
 
@@ -34,8 +34,6 @@ const TableBody = props => {
 
 }
 class Tabela extends Component {
-
-
 
     render() {
         const { empresas, removeEmpresa } = this.props;
